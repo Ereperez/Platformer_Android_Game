@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="stage_width">1280</integer>
+    <integer name="stage_height">720</integer>
+    <integer name="star_count">40</integer>
+    <integer name="enemy_count_easy">4</integer>
+    <integer name="enemy_count_normal">6</integer>
+    <integer name="enemy_count_hard">8</integer>
+    <integer name="enemy_meteor_count">3</integer>
+    <string name="meteor_speed">4f</string>
+    <string name="star_speed">2f</string>
+    <integer name="star_max_radius">3</integer>
+    <integer name="star_min_radius">1</integer>
+
+    <integer name="player_height">80</integer>
+    <integer name="starting_position">40</integer>
+    <integer name="starting_health">5</integer>
+    <integer name="player_immunity_time">60</integer>
+    <string name="acc">1.2f</string>
+    <string name="min_vel">1f</string>
+    <string name="max_vel">20f</string>
+    <string name="gravity">1.1f</string>
+    <string name="lift">-2.6f</string>
+    <string name="drag">0.97f</string>
+
+    <integer name="star_color1">0xffff1166</integer>
+    <integer name="star_color2">0xffffff00</integer>
+    <integer name="star_color3">0xff99ccff</integer>
+    <integer name="star_color4">0xff66ff00</integer>
+    <integer name="player_blink_color">0xff000000</integer>
+    <integer name="enemy_height">80</integer>
+    <integer name="meteor_height">50</integer>
+    <integer name="enemy_spawn_offset">1280</integer>
+
+    <string name="left_volume">0.9f</string>
+    <string name="right_volume">0.9f</string>
+    <string name="rate_volume">1.0f</string>
+    <integer name="priority_volume">1</integer><!-- -1 = loop forever -->
+    <integer name="loop_volume">0</integer>
+
+    <string name="hud_text_size">35f</string>
+    <string name="fullscreen_text_size">45f</string>
+    <integer name="hud_text_offset">10</integer>
+</resources>
