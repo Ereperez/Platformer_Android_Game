@@ -6,6 +6,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.util.Log;
 
+import com.ereperez.platformer.GameEvent;
 import com.ereperez.platformer.GameSettings;
 import com.ereperez.platformer.input.InputManager;
 import com.ereperez.platformer.levels.LevelData;
@@ -75,11 +76,11 @@ public class Player extends DynamicEntity {
         velX = direction * PLAYER_RUN_SPEED;
         updateFacingDirection(direction);
         if (controls.isJumping && isOnGround){
+            game.onGameEvent(GameEvent.Jump, this);
             velY = PLAYER_JUMP_FORCE;
             isOnGround = false;
         }
         super.update(dt);
-
         updateCount++;
         checkImmunity();
     }
@@ -94,12 +95,13 @@ public class Player extends DynamicEntity {
     public void onCollision(Entity that) {
         super.onCollision(that);
         if (that.equals(LevelManager.spikes)){
-            Log.d("Collision", "with Spikes");
+            Log.d("Player Collision: ", "with Spikes");
             Log.d("Player health: ", String.valueOf(health));
             if (updateCount > IMMUNITY_TIME){
                 updateCount = 0;
                 immunity = true;
                 health--;
+                game.onGameEvent(GameEvent.SpikeDamage, this);
                 //TODO sound effect
             }
         }

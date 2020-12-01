@@ -12,7 +12,9 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.ereperez.platformer.entities.DynamicEntity;
 import com.ereperez.platformer.entities.Entity;
+import com.ereperez.platformer.entities.Player;
 import com.ereperez.platformer.input.InputManager;
 import com.ereperez.platformer.levels.LevelManager;
 import com.ereperez.platformer.levels.TestLevel;
@@ -33,6 +35,7 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
 
     private Thread gameThread = null;
     private volatile boolean isRunning = false;
+    private static boolean playStartSound = true;
 
     private SurfaceHolder holder = null;
     private final Paint paint = new Paint();
@@ -45,21 +48,26 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
     private Viewport camera = null;
     public final ArrayList<Entity> visibleEntities = new ArrayList<>();
     public BitmapPool pool = null;
+    private Jukebox jukebox = null;//TODO public?
 
     public Game(Context context) {
         super(context);
+        soundInit(context);
         init();
     }
     public Game(Context context, AttributeSet attrs) {
         super(context, attrs);
+        soundInit(context);
         init();
     }
     public Game(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        soundInit(context);
         init();
     }
     public Game(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        soundInit(context);
         init();
     }
 
@@ -84,6 +92,10 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
         holder.setFixedSize(STAGE_WIDTH, STAGE_HEIGHT);
 
         Log.d(TAG, "Resolution: " + STAGE_WIDTH + " : " + STAGE_HEIGHT);
+    }
+
+    private void soundInit(Context context){
+        jukebox = new Jukebox(context); //TODO move up?
     }
 
     public InputManager getControls(){
@@ -128,6 +140,10 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
         return screenResolution;
     }*/
 
+    public void onGameEvent(GameEvent gameEvent, Entity e /*can be null!*/) {
+        jukebox.playSoundForGameEvent(gameEvent);
+    }
+
     @Override
     public void run() {
         long lastFrame = System.nanoTime();
@@ -140,6 +156,10 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
             update(deltaTime);
             buildVisibleSet();
             render(camera, visibleEntities);
+            if (playStartSound){
+                onGameEvent(GameEvent.GameStart, null);
+                playStartSound = false;
+            }
         }
     }
 
@@ -149,7 +169,11 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
         level.update(dt);
         if (level.player.health < 1){
             //TODO restart game + message + sound
-            init();
+            onGameEvent(GameEvent.GameOver, null);
+            //init();
+            level = null;
+            level = new LevelManager(new TestLevel(), pool);
+            playStartSound = true;
         }
     }
 
@@ -196,6 +220,7 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
         Log.d(TAG, "onResume");
         isRunning = true;
         controls.onResume();
+        jukebox.resumeBgMusic();
         gameThread = new Thread(this);
     }
 
@@ -203,6 +228,7 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
         Log.d(TAG, "onPause");
         isRunning = false;
         controls.onPause();
+        jukebox.pauseBgMusic();
         while (true){ //gameThread.getState() == Thread.State.TERMINATED
             try {
                 gameThread.join();

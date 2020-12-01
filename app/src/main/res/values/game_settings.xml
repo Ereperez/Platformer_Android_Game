@@ -32,8 +32,8 @@
     <integer name="meteor_height">50</integer>
     <integer name="enemy_spawn_offset">1280</integer>
 
-    <string name="left_volume">0.9f</string>
-    <string name="right_volume">0.9f</string>
+    <string name="left_volume">1f</string>
+    <string name="right_volume">1f</string>
     <string name="rate_volume">1.0f</string>
     <integer name="priority_volume">1</integer><!-- -1 = loop forever -->
     <integer name="loop_volume">0</integer>
