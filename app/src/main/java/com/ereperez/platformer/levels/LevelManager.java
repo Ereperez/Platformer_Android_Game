@@ -44,10 +44,6 @@ public class LevelManager {
                 if (a.isColliding(b)){
                     a.onCollision(b);
                     b.onCollision(a);
-                    //Log.d("Collision", "Colliding");    //TODO TEST
-/*                    if (a.getClass().equals("Player") && b.getClass().equals("EnemySpikes")){
-                        Log.d("Collision", "Player + SPikes");
-                    }*/
                 }
             }
         }
@@ -94,7 +90,7 @@ public class LevelManager {
         }
         for (Entity e : entitiesToAdd){
             entities.add(e);
-            Log.d("Entity: ", e.getClass().getName()); //TODO remove - testing
+            //Log.d("Entity: ", e.getClass().getName()); //TODO remove - testing
         }
         entitiesToRemove.clear();
         entitiesToAdd.clear();

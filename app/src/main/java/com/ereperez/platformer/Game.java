@@ -21,6 +21,7 @@ import com.ereperez.platformer.levels.TestLevel;
 import com.ereperez.platformer.utils.BitmapPool;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callback {
     public static final String TAG = "Game";
@@ -49,6 +50,7 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
     public final ArrayList<Entity> visibleEntities = new ArrayList<>();
     public BitmapPool pool = null;
     private Jukebox jukebox = null;//TODO public?
+    private GameHUD gameHUD = null;
 
     public Game(Context context) {
         super(context);
@@ -86,6 +88,8 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
 
         pool = new BitmapPool(this);
         level = new LevelManager(new TestLevel(), pool);
+
+        gameHUD = new GameHUD();
 
         holder = getHolder();
         holder.addCallback(this);
@@ -167,6 +171,10 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
         controls.update((float) dt);
         camera.lookAt(level.player);//look at % of distance of current camera and player - easing lurk  //(level.levelWidth/2, level.levelHeight/2);
         level.update(dt);
+        checkGameOver();
+    }
+
+    private void checkGameOver(){
         if (level.player.health < 1){
             //TODO restart game + message + sound
             onGameEvent(GameEvent.GameOver, null);
@@ -201,6 +209,8 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
                 transform.postTranslate(position.x, position.y);
                 e.render(canvas, transform, paint);
             }
+            gameHUD.renderHUD(level.player.health, 5, 10, canvas, paint);
+            //TODO: make visible all the time in the viewport
         }finally {
             holder.unlockCanvasAndPost(canvas);
         }

@@ -20,12 +20,14 @@ import com.ereperez.platformer.input.VirtualJoystick;
 
 public class MainActivity extends AppCompatActivity implements InputManager.InputDeviceListener {
     private static final String TAG = "MainActivity";
+    GameSettings gameSettings;
     Game game;
     GamepadListener gamepadListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        gameSettings = new GameSettings(this);
         setContentView(R.layout.activity_main);
         game = findViewById(R.id.game);
        //InputManager controls = new TouchController(findViewById(R.id.touch_control)); //TODO menu for player to choose control - remove touch
