@@ -22,7 +22,7 @@ public abstract class Entity {
     public void render(final Canvas canvas, final Matrix transform, final Paint paint) {}
     public void onCollision(final Entity that) {}
     public void destroy() {}
-    void respawn() {}
+    void respawn() {}//TODO remove?
 
     public float left() {
         return x;

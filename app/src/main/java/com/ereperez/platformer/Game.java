@@ -147,6 +147,10 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
         controls.update((float) dt);
         camera.lookAt(level.player);//look at % of distance of current camera and player - easing lurk  //(level.levelWidth/2, level.levelHeight/2);
         level.update(dt);
+        if (level.player.health < 1){
+            //TODO restart game + message + sound
+            init();
+        }
     }
 
     //TODO take argument and return

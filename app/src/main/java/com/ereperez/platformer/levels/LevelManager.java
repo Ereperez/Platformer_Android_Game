@@ -1,5 +1,8 @@
 package com.ereperez.platformer.levels;
 
+import android.util.Log;
+
+import com.ereperez.platformer.entities.EnemySpikes;
 import com.ereperez.platformer.entities.Entity;
 import com.ereperez.platformer.entities.Player;
 import com.ereperez.platformer.entities.StaticEntity;
@@ -14,6 +17,7 @@ public class LevelManager {
     private final ArrayList<Entity> entitiesToAdd = new ArrayList<>();
     private final ArrayList<Entity> entitiesToRemove = new ArrayList<>();
     public Player player = null;
+    public static EnemySpikes spikes = null; //TODO remove?
     private BitmapPool pool = null;
 
     //TODO move construction of pool here and make it available to the entities
@@ -40,6 +44,10 @@ public class LevelManager {
                 if (a.isColliding(b)){
                     a.onCollision(b);
                     b.onCollision(a);
+                    //Log.d("Collision", "Colliding");    //TODO TEST
+/*                    if (a.getClass().equals("Player") && b.getClass().equals("EnemySpikes")){
+                        Log.d("Collision", "Player + SPikes");
+                    }*/
                 }
             }
         }
@@ -69,6 +77,11 @@ public class LevelManager {
                 player = (Player) e;
             }
             //TODO
+        }else if (spriteName.equalsIgnoreCase(LevelData.SPIKES)){ //TODO remove?
+            e = new EnemySpikes(spriteName, xPos, yPos);
+            if (spikes == null){ //!=
+                spikes = (EnemySpikes) e;
+            }
         }else{
             e = new StaticEntity(spriteName, xPos, yPos);
         }
@@ -81,6 +94,7 @@ public class LevelManager {
         }
         for (Entity e : entitiesToAdd){
             entities.add(e);
+            Log.d("Entity: ", e.getClass().getName()); //TODO remove - testing
         }
         entitiesToRemove.clear();
         entitiesToAdd.clear();
@@ -101,6 +115,7 @@ public class LevelManager {
         }
         entities.clear();
         player = null;
+        spikes = null;//TODO remove?
         pool.empty();
         //TODO: make sure the bitmappool is empty game.pool
     }

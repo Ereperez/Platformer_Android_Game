@@ -1,5 +1,9 @@
 package com.ereperez.platformer.entities;
 
+import android.util.Log;
+
+import com.ereperez.platformer.levels.LevelData;
+import com.ereperez.platformer.levels.LevelManager;
 import com.ereperez.platformer.utils.Utils;
 
 public class DynamicEntity extends StaticEntity {

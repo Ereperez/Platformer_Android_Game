@@ -4,8 +4,13 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.util.Log;
 
+import com.ereperez.platformer.GameSettings;
 import com.ereperez.platformer.input.InputManager;
+import com.ereperez.platformer.levels.LevelData;
+import com.ereperez.platformer.levels.LevelManager;
+import com.ereperez.platformer.utils.BitmapUtils;
 
 public class Player extends DynamicEntity {
     static final String TAG = "Player";
@@ -18,16 +23,17 @@ public class Player extends DynamicEntity {
     private static final float GRAVITY = GameSettings.GRAVITY;
     private static final float LIFT = GameSettings.LIFT;
     private static final float DRAG = GameSettings.DRAG;
-    private static final int COLOR = GameSettings.PLAYER_BLINK_COLOR;
-    private static final int IMMUNITY_TIME = GameSettings.PLAYER_IMMUNITY_TIME;
     int health = 0;*/
     private static final float PLAYER_RUN_SPEED = 6.0f; //meter per second TODO: resource
     private static final float PLAYER_JUMP_FORCE = -(GRAVITY/2); //whatever feel good TODO: resource
     private static final float MIN_INPUT_TO_TURN = 0.05f; //5% joystick input before we start turning TODO: RESOURCE
+    private static final int COLOR = GameSettings.PLAYER_BLINK_COLOR;
+    private static final int IMMUNITY_TIME = 60; //GameSettings.PLAYER_IMMUNITY_TIME;
     private final int LEFT = 1; //TODO: RESORUCE
     private final int RIGHT = -1;
     private int facing = LEFT;
 
+    public int health = 5; //TODO: resource
     int updateCount = 0;
     boolean immunity = false;
     final Bitmap tempBit;
@@ -74,8 +80,8 @@ public class Player extends DynamicEntity {
         }
         super.update(dt);
 
-        //updateCount++;
-        //checkImmunity();
+        updateCount++;
+        checkImmunity();
     }
 
     private void updateFacingDirection(final float controlDirection){//TODO don't turn on slight movement
@@ -84,16 +90,22 @@ public class Player extends DynamicEntity {
         else if (controlDirection > 0 ) { facing = RIGHT; }
     }
 
-/*    @Override
+    @Override
     public void onCollision(Entity that) {
-        if (updateCount > IMMUNITY_TIME){
-            updateCount = 0;
-            immunity = true;
-            health--;
+        super.onCollision(that);
+        if (that.equals(LevelManager.spikes)){
+            Log.d("Collision", "with Spikes");
+            Log.d("Player health: ", String.valueOf(health));
+            if (updateCount > IMMUNITY_TIME){
+                updateCount = 0;
+                immunity = true;
+                health--;
+                //TODO sound effect
+            }
         }
-    }*/
+    }
 
-/*    private void checkImmunity(){
+    private void checkImmunity(){
         if (immunity && updateCount > 0){
             if (updateCount %2 == 0 && updateCount < IMMUNITY_TIME) {
                 bitmap = BitmapUtils.colorBitmap(bitmap, COLOR);
@@ -105,5 +117,5 @@ public class Player extends DynamicEntity {
                 immunity = false;
             }
         }
-    }*/
+    }
 }
