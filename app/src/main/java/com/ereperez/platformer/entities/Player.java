@@ -13,6 +13,8 @@ import com.ereperez.platformer.levels.LevelData;
 import com.ereperez.platformer.levels.LevelManager;
 import com.ereperez.platformer.utils.BitmapUtils;
 
+import java.util.logging.Level;
+
 public class Player extends DynamicEntity {
     static final String TAG = "Player";
 /*    private static final int PLAYER_HEIGHT = GameSettings.PLAYER_HEIGHT;
@@ -35,6 +37,7 @@ public class Player extends DynamicEntity {
     private int facing = LEFT;
 
     public int health = 5; //TODO: resource
+    public int coinsCollected = 0;
     int updateCount = 0;
     boolean immunity = false;
     final Bitmap tempBit;
@@ -94,16 +97,20 @@ public class Player extends DynamicEntity {
     @Override
     public void onCollision(Entity that) {
         super.onCollision(that);
-        if (that.equals(LevelManager.spikes)){
+        if (that.getClass().equals(EnemySpikes.class)){
             Log.d("Player Collision: ", "with Spikes");
             Log.d("Player health: ", String.valueOf(health));
-            if (updateCount > IMMUNITY_TIME){
+            if (updateCount > IMMUNITY_TIME) {
                 updateCount = 0;
                 immunity = true;
                 health--;
                 game.onGameEvent(GameEvent.SpikeDamage, this);
                 //TODO sound effect
             }
+        }else if(that.getClass().equals(Coins.class)){
+            Log.d("Player Collision: ", "with coin");
+            coinsCollected++;//TODO coinamount--;
+            //game.level.removeEntity(that);
         }
     }
 

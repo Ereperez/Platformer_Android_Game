@@ -4,6 +4,7 @@ public abstract class LevelData  {
     public static final String NULLSPRITE = "nullsprite"; //TODO resource
     public static final String PLAYER = "red_left1";
     public static final String SPIKES = "spearsdown_brown";
+    public static final String COINS = "coin_yellow";
     public static final int NO_TILE = 0;
 
     int [][] mTiles;

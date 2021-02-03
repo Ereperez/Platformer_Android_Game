@@ -43,7 +43,7 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
     private Canvas canvas = null;
     private final Matrix transform = new Matrix();
 
-    private LevelManager level = null;
+    private LevelManager level = null; //TODO public?
     //private TestLevel mLevel = new TestLevel();//TODO test
     private InputManager controls = new InputManager();
     private Viewport camera = null;
@@ -209,7 +209,7 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
                 transform.postTranslate(position.x, position.y);
                 e.render(canvas, transform, paint);
             }
-            gameHUD.renderHUD(level.player.health, 5, 10, canvas, paint);
+            gameHUD.renderHUD(level.player.health, level.player.coinsCollected, 10, canvas, paint);
             //TODO: make visible all the time in the viewport
         }finally {
             holder.unlockCanvasAndPost(canvas);
