@@ -28,7 +28,7 @@ public class BitmapPool {
             return bmp;
         }
         try {
-            bmp = BitmapUtils.loadScaledBitmap(game.getContext(), sprite, (int) game.worldToScreenX(widthMeters), (int) game.worldToScreenY(heightMeters));
+            bmp = BitmapUtils.loadScaledBitmap(game.getContext(), sprite, game.worldToScreenX(widthMeters), game.worldToScreenY(heightMeters));
             put(key, bmp);
         }catch(final OutOfMemoryError e){
             //this is very very bad! Ideally you have some reference counted assets and can start unloading as needed

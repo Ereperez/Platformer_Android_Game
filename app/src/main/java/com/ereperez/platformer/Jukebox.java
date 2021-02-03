@@ -41,7 +41,7 @@ public class Jukebox {
     private HashMap soundsMap;
     private boolean soundEnabled = true; //TODO: make prefs
     private boolean musicEnabled = true; //TODO: make pref
-    private Context context;
+    private final Context context;
 
     public Jukebox(Context mContext) {
         context = mContext;

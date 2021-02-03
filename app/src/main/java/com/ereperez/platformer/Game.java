@@ -43,7 +43,7 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
     private Canvas canvas = null;
     private final Matrix transform = new Matrix();
 
-    private LevelManager level = null; //TODO public?
+    private LevelManager level = null; //TODO public? private?
     //private TestLevel mLevel = new TestLevel();//TODO test
     private InputManager controls = new InputManager();
     private Viewport camera = null;
@@ -51,6 +51,8 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
     public BitmapPool pool = null;
     private Jukebox jukebox = null;//TODO public?
     private GameHUD gameHUD = null;
+    public int coinAmount = 0;
+    private boolean gameOver = false;
 
     public Game(Context context) {
         super(context);
@@ -90,6 +92,7 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
         level = new LevelManager(new TestLevel(), pool);
 
         gameHUD = new GameHUD();
+        coinAmount = level.coinAmount;
 
         holder = getHolder();
         holder.addCallback(this);
@@ -119,8 +122,8 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
     public int worldToScreenX(float worldDistance){ return (int) (worldDistance * camera.getPixelsPerMeterX()); }//TODO 50 is temp - worldDistance * 50
     public int worldToScreenY(float worldDistance){ return (int) (worldDistance * camera.getPixelsPerMeterY()); } //heightMeter * 50
 
-    public float screenToWorldX(float pixelDistance){ return (float) (pixelDistance / camera.getPixelsPerMeterX()); }//TODO 50 is temp - worldDistance * 50
-    public float screenToWorldY(float pixelDistance){ return (float) (pixelDistance / camera.getPixelsPerMeterY()); } //heightMeter * 50
+    public float screenToWorldX(float pixelDistance){ return pixelDistance / camera.getPixelsPerMeterX(); }//TODO 50 is temp - worldDistance * 50
+    public float screenToWorldY(float pixelDistance){ return pixelDistance / camera.getPixelsPerMeterY(); } //heightMeter * 50
 
     public static int getScreenWidth(){
         return Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -160,6 +163,7 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
             update(deltaTime);
             buildVisibleSet();
             render(camera, visibleEntities);
+            checkGameOver();
             if (playStartSound){
                 onGameEvent(GameEvent.GameStart, null);
                 playStartSound = false;
@@ -171,16 +175,33 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
         controls.update((float) dt);
         camera.lookAt(level.player);//look at % of distance of current camera and player - easing lurk  //(level.levelWidth/2, level.levelHeight/2);
         level.update(dt);
-        checkGameOver();
+        checkPlayerHealth();
     }
 
-    private void checkGameOver(){
+    private void checkPlayerHealth(){
         if (level.player.health < 1){
             //TODO restart game + message + sound
             onGameEvent(GameEvent.GameOver, null);
+            gameOver = true;
             //init();
-            level = null;
+            //gameHUD.gameOver();//TODO check
+/*            level = null;
             level = new LevelManager(new TestLevel(), pool);
+            playStartSound = true;*/
+        }
+    }
+
+    private void checkGameOver(){
+        if (gameOver){
+            try {
+                Thread.sleep(2000);//waits 2sec before resetting game
+            } catch (InterruptedException e) {
+                Log.d(TAG, Log.getStackTraceString(e.getCause()));
+            }
+            level = null;
+            //level = new LevelManager(new TestLevel(), pool);
+            init();
+            gameOver = false;
             playStartSound = true;
         }
     }
@@ -188,7 +209,7 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
     //TODO take argument and return
     private void buildVisibleSet(){
         visibleEntities.clear();
-        for (final Entity e : level.entities){
+        for (final Entity e : LevelManager.entities){
             if (camera.inView(e)){
                 visibleEntities.add(e);
             }
@@ -209,7 +230,10 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
                 transform.postTranslate(position.x, position.y);
                 e.render(canvas, transform, paint);
             }
-            gameHUD.renderHUD(level.player.health, level.player.coinsCollected, 10, canvas, paint);
+            gameHUD.renderHUD(level.player.health, level.player.coinsCollected, coinAmount, canvas, paint);
+            if (gameOver){
+                gameHUD.gameOver();
+            }
             //TODO: make visible all the time in the viewport
         }finally {
             holder.unlockCanvasAndPost(canvas);

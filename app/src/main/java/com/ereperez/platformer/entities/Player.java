@@ -110,6 +110,7 @@ public class Player extends DynamicEntity {
         }else if(that.getClass().equals(Coins.class)){
             Log.d("Player Collision: ", "with coin");
             coinsCollected++;//TODO coinamount--;
+            game.coinAmount--;
             //game.level.removeEntity(that);
         }
     }

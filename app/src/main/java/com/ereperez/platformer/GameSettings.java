@@ -85,7 +85,6 @@ public class GameSettings {
         HEALTH_HUD = res.getString(R.string.health_hud);
         GAME_OVER_HUD = res.getString(R.string.game_over_hud);
         GAME_OVER_RESTART_HUD = res.getString(R.string.game_over_restart_hud);
-        START_SCREEN_HUD = res.getString(R.string.start_screen_hud);
         FULLSCREEN_TEXT_SIZE = Float.parseFloat(res.getString(R.string.fullscreen_text_size));
         HUD_TEXT_OFFSET = res.getInteger(R.integer.hud_text_offset);
         HUD_TEXT_SIZE = Float.parseFloat(res.getString(R.string.hud_text_size));

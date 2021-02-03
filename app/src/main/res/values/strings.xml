@@ -2,9 +2,8 @@
     <string name="app_name">Platformer</string>
     <string name="coins">Coins</string>
     <string name="coins_collected_hud">"Coins collected: "</string>
-    <string name="coins_total_hud">"Coins total: "</string>
+    <string name="coins_total_hud">"Coins left: "</string>
     <string name="health_hud">"Health: "</string>
     <string name="game_over_hud">Game Over!</string>
-    <string name="game_over_restart_hud">(press to restart)</string>
-    <string name="start_screen_hud">Tap the screen to start!</string>
+    <string name="game_over_restart_hud">(Game will restart)</string>
 </resources>

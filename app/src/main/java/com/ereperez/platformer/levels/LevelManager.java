@@ -22,6 +22,7 @@ public class LevelManager {
     //public static EnemySpikes spikes = null; //TODO remove static
     //public static Coins coins = null;
     private BitmapPool pool = null;
+    public int coinAmount = 0;
 
     //TODO move construction of pool here and make it available to the entities
     public LevelManager(final LevelData map, final BitmapPool mPool) {
@@ -87,6 +88,7 @@ public class LevelManager {
         }else if (spriteName.equalsIgnoreCase(LevelData.COINS)){
             e = new Coins(spriteName, xPos, yPos);
             //todo coinAmount++ to get info to UI
+            coinAmount++;
 /*            if (coins == null){ //!=
                 coins = (Coins) e;
             }*/
