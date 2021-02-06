@@ -17,10 +17,12 @@ import com.ereperez.platformer.input.Gamepad;
 import com.ereperez.platformer.input.GamepadListener;
 import com.ereperez.platformer.input.InputManager;
 import com.ereperez.platformer.input.VirtualJoystick;
+import com.ereperez.platformer.levels.LevelLoader;
 
 public class MainActivity extends AppCompatActivity implements InputManager.InputDeviceListener {
     private static final String TAG = "MainActivity";
     GameSettings gameSettings;
+    LevelLoader levelLoader;
     Game game;
     GamepadListener gamepadListener;
 
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements InputManager.Inpu
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         gameSettings = new GameSettings(this);
+        levelLoader = new LevelLoader(this);
         setContentView(R.layout.activity_main);
         game = findViewById(R.id.game);
        //InputManager controls = new TouchController(findViewById(R.id.touch_control)); //TODO menu for player to choose control - remove touch

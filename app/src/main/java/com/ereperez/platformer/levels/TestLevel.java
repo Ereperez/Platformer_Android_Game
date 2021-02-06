@@ -1,6 +1,9 @@
 package com.ereperez.platformer.levels;
 
+import android.util.Log;
 import android.util.SparseArray;
+
+import java.util.Arrays;
 
 public class TestLevel extends LevelData {
     private final SparseArray<String> mTileIdToSpriteName = new SparseArray<>();
@@ -14,6 +17,7 @@ public class TestLevel extends LevelData {
         mTileIdToSpriteName.put(5, SPIKES);
         mTileIdToSpriteName.put(6, COINS);
 
+        //mTiles = LevelLoader.loadedTiles; //TODO fix
         //TODO fix the level
         mTiles = new int[][]{
                 {3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,4},
@@ -30,6 +34,9 @@ public class TestLevel extends LevelData {
                 {3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,4},
                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
         };
+        for (int[] m : mTiles){
+            Log.d("mTiles", Arrays.toString(m));//todo fix
+        }
         updateLevelDimensions();
     }
 

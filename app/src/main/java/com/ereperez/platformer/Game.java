@@ -12,16 +12,13 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.ereperez.platformer.entities.DynamicEntity;
 import com.ereperez.platformer.entities.Entity;
-import com.ereperez.platformer.entities.Player;
 import com.ereperez.platformer.input.InputManager;
 import com.ereperez.platformer.levels.LevelManager;
 import com.ereperez.platformer.levels.TestLevel;
 import com.ereperez.platformer.utils.BitmapPool;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callback {
     public static final String TAG = "Game";
@@ -56,23 +53,27 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
 
     public Game(Context context) {
         super(context);
-        soundInit(context);
+        ctxInit(context);
         init();
     }
     public Game(Context context, AttributeSet attrs) {
         super(context, attrs);
-        soundInit(context);
+        ctxInit(context);
         init();
     }
     public Game(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        soundInit(context);
+        ctxInit(context);
         init();
     }
     public Game(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        soundInit(context);
+        ctxInit(context);
         init();
+    }
+
+    private void ctxInit(Context context){//todo soundInit
+        jukebox = new Jukebox(context); //TODO move to init?
     }
 
     private void init(){
@@ -99,10 +100,6 @@ public class Game extends SurfaceView implements Runnable, SurfaceHolder.Callbac
         holder.setFixedSize(STAGE_WIDTH, STAGE_HEIGHT);
 
         Log.d(TAG, "Resolution: " + STAGE_WIDTH + " : " + STAGE_HEIGHT);
-    }
-
-    private void soundInit(Context context){
-        jukebox = new Jukebox(context); //TODO move up?
     }
 
     public InputManager getControls(){
