@@ -17,9 +17,9 @@ public class TestLevel extends LevelData {
         mTileIdToSpriteName.put(5, SPIKES);
         mTileIdToSpriteName.put(6, COINS);
 
-        //mTiles = LevelLoader.loadedTiles; //TODO fix
+        mTiles = LevelLoader.loadedTiles; //TODO fix
         //TODO fix the level
-        mTiles = new int[][]{
+/*        mTiles = new int[][]{
                 {3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,4},
                 {3,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,4},
                 {3,2,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
@@ -33,7 +33,7 @@ public class TestLevel extends LevelData {
                 {3,0,0,0,0,0,0,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,5,0,6,0,5,4},
                 {3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,4},
                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
-        };
+        };*/
         for (int[] m : mTiles){
             Log.d("mTiles", Arrays.toString(m));//todo fix
         }
