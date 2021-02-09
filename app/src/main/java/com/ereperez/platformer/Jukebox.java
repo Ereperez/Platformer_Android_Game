@@ -1,5 +1,6 @@
 package com.ereperez.platformer;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
@@ -31,7 +32,7 @@ public class Jukebox {
 
     SoundPool soundPool = null;
     MediaPlayer mBgPlayer = null;
-    private HashMap soundsMap = null;
+    private HashMap<GameEvent, Integer> soundsMap = null;
     private boolean soundEnabled = true;
     private boolean musicEnabled = true;
     private final Context context;
@@ -100,6 +101,7 @@ public class Jukebox {
         }
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     @SuppressWarnings("deprecation")
     private void createSoundPool() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
@@ -130,7 +132,7 @@ public class Jukebox {
 
     private void loadSounds(){
         createSoundPool();
-        soundsMap = new HashMap();
+        soundsMap = new HashMap<>();
         loadEventSound(GameEvent.GameOver, "sfx/gameOver.wav");
         loadEventSound(GameEvent.GameStart, "sfx/gameStart.wav");
         loadEventSound(GameEvent.Jump, "sfx/jump.wav");
