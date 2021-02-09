@@ -1,9 +1,6 @@
 package com.ereperez.platformer.levels;
 
-import android.util.Log;
-
 import com.ereperez.platformer.entities.Coins;
-import com.ereperez.platformer.entities.DynamicEntity;
 import com.ereperez.platformer.entities.EnemySpikes;
 import com.ereperez.platformer.entities.Entity;
 import com.ereperez.platformer.entities.Player;
@@ -15,16 +12,13 @@ import java.util.ArrayList;
 public class LevelManager {
     public int levelHeight = 0;
     public int levelWidth = 0;
-    public final static ArrayList<Entity> entities = new ArrayList<>();//TODO remove static?
+    public final static ArrayList<Entity> entities = new ArrayList<>();
     private final ArrayList<Entity> entitiesToAdd = new ArrayList<>();
     private final ArrayList<Entity> entitiesToRemove = new ArrayList<>();
     public Player player = null;
-    //public static EnemySpikes spikes = null; //TODO remove static
-    //public static Coins coins = null;
     private BitmapPool pool = null;
     public int coinAmount = 0;
 
-    //TODO move construction of pool here and make it available to the entities
     public LevelManager(final LevelData map, final BitmapPool mPool) {
         pool = mPool;
         loadMapAssets(map);
@@ -39,7 +33,7 @@ public class LevelManager {
     }
 
     private void checkCollisions(){
-        final int count = entities.size();//TODO test only what is close to us
+        final int count = entities.size();
         Entity a, b;
         for (int i = 0; i < count-1; i++){
             a = entities.get(i);
@@ -48,7 +42,7 @@ public class LevelManager {
                 if (a.isColliding(b)){
                     a.onCollision(b);
                     b.onCollision(a);
-                    if (a.getClass().equals(Coins.class) && b.equals(player) || a.equals(player) && b.getClass().equals(Coins.class)){ //TODO remove?
+                    if (a.getClass().equals(Coins.class) && b.equals(player) || a.equals(player) && b.getClass().equals(Coins.class)){
                         removeEntity(b);
                     }
                 }
@@ -74,24 +68,15 @@ public class LevelManager {
     private void createEntity(final String spriteName, final int xPos, final int yPos){
         Entity e = null;
         if (spriteName.equalsIgnoreCase(LevelData.PLAYER)){
-            //e = new DynamicEntity(spriteName, xPos, yPos);
             e = new Player(spriteName, xPos, yPos);
-            if (player == null){ //!=
+            if (player == null){
                 player = (Player) e;
             }
-            //TODO
-        }else if (spriteName.equalsIgnoreCase(LevelData.SPIKES)){ //TODO remove?
-            e = new EnemySpikes(spriteName, xPos, yPos); //TODO: Render different size - fix Spike size
-/*            if (spikes == null){ //!=
-                spikes = (EnemySpikes) e;
-            }*/
+        }else if (spriteName.equalsIgnoreCase(LevelData.SPIKES)){
+            e = new EnemySpikes(spriteName, xPos, yPos);
         }else if (spriteName.equalsIgnoreCase(LevelData.COINS)){
             e = new Coins(spriteName, xPos, yPos);
-            //todo coinAmount++ to get info to UI
             coinAmount++;
-/*            if (coins == null){ //!=
-                coins = (Coins) e;
-            }*/
         }else{
             e = new StaticEntity(spriteName, xPos, yPos);
         }
@@ -104,7 +89,6 @@ public class LevelManager {
         }
         for (Entity e : entitiesToAdd){
             entities.add(e);
-            //Log.d("Entity: ", e.getClass().getName()); //TODO remove - testing
         }
         entitiesToRemove.clear();
         entitiesToAdd.clear();
@@ -125,10 +109,7 @@ public class LevelManager {
         }
         entities.clear();
         player = null;
-        //spikes = null;//TODO remove?
-        //coins = null;
         pool.empty();
-        //TODO: make sure the bitmappool is empty game.pool
     }
 
     public void destroy(){

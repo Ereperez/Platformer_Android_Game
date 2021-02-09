@@ -5,38 +5,25 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.util.Log;
-
 import com.ereperez.platformer.GameEvent;
 import com.ereperez.platformer.GameSettings;
 import com.ereperez.platformer.input.InputManager;
-import com.ereperez.platformer.levels.LevelData;
-import com.ereperez.platformer.levels.LevelManager;
 import com.ereperez.platformer.utils.BitmapUtils;
-
-import java.util.logging.Level;
 
 public class Player extends DynamicEntity {
     static final String TAG = "Player";
-/*    private static final int PLAYER_HEIGHT = GameSettings.PLAYER_HEIGHT;
-    private static final int STARTING_POSITION = GameSettings.STARTING_POSITION;
-    private static final int STARTING_HEALTH = GameSettings.STARTING_HEALTH;
-    private static final float ACC = GameSettings.ACC;
-    private static final float MIN_VEL = GameSettings.MIN_VEL;
-    private static final float MAX_VEL = GameSettings.MAX_VEL;
-    private static final float GRAVITY = GameSettings.GRAVITY;
-    private static final float LIFT = GameSettings.LIFT;
-    private static final float DRAG = GameSettings.DRAG;
-    int health = 0;*/
-    private static final float PLAYER_RUN_SPEED = 6.0f; //meter per second TODO: resource
-    private static final float PLAYER_JUMP_FORCE = -(GRAVITY/2); //whatever feel good TODO: resource
-    private static final float MIN_INPUT_TO_TURN = 0.05f; //5% joystick input before we start turning TODO: RESOURCE
+    private static final int PLAYER_HEALTH = GameSettings.PLAYER_HEALTH;
+    private static final float PLAYER_RUN_SPEED = GameSettings.PLAYER_SPEED;
+    private static final float PLAYER_JUMP_FORCE = GameSettings.PLAYER_JUMP_FORCE;
+    private static final float MIN_INPUT_TO_TURN = GameSettings.MIN_TURN_INPUT;
     private static final int COLOR = GameSettings.PLAYER_BLINK_COLOR;
-    private static final int IMMUNITY_TIME = 60; //GameSettings.PLAYER_IMMUNITY_TIME;
-    private final int LEFT = 1; //TODO: RESORUCE
-    private final int RIGHT = -1;
+    private static final int IMMUNITY_TIME = GameSettings.PLAYER_IMMUNITY_TIME;
+    private static final int LEFT = GameSettings.LEFT_DIRECTION;
+    private static final int RIGHT = GameSettings.RIGHT_DIRECTION;
+    private static final float PLAYER_DIMENSION = GameSettings.PLAYER_DIMENSION;
     private int facing = LEFT;
 
-    public int health = 5; //TODO: resource
+    public int health = PLAYER_HEALTH;
     public int coinsCollected = 0;
     int updateCount = 0;
     boolean immunity = false;
@@ -44,11 +31,10 @@ public class Player extends DynamicEntity {
 
     public Player(final String spriteName, final int xPos, final int yPos) {
         super(spriteName, xPos, yPos);
-        width = 0.5f;//DEFAULT_DIMENSION;
-        height = 0.5f;//DEFAULT_DIMENSION;
+        width = PLAYER_DIMENSION;
+        height = PLAYER_DIMENSION;
         loadBitMap(spriteName, xPos, yPos);
         tempBit = bitmap;
-        //respawn();
     }
 
     @Override
@@ -61,19 +47,8 @@ public class Player extends DynamicEntity {
         super.render(canvas, transform, paint);
     }
 
-/*    @Override
-    void respawn() {
-        _x = STARTING_POSITION;
-        health = STARTING_HEALTH;
-        _velX = 0f;
-        _velY = 0f;
-        bitmap = tempBit;
-        immunity = false;
-    }*/
-
     @Override
     public void update(final double dt) {
-        //_x += _velX * dt;
         final InputManager controls = game.getControls();
         final float direction = controls.horizontalFactor;
         velX = direction * PLAYER_RUN_SPEED;
@@ -88,7 +63,7 @@ public class Player extends DynamicEntity {
         checkImmunity();
     }
 
-    private void updateFacingDirection(final float controlDirection){//TODO don't turn on slight movement
+    private void updateFacingDirection(final float controlDirection){
         if (Math.abs(controlDirection) < MIN_INPUT_TO_TURN) { return; }
         if (controlDirection < 0) { facing = LEFT; }
         else if (controlDirection > 0 ) { facing = RIGHT; }
@@ -98,20 +73,17 @@ public class Player extends DynamicEntity {
     public void onCollision(Entity that) {
         super.onCollision(that);
         if (that.getClass().equals(EnemySpikes.class)){
-            Log.d("Player Collision: ", "with Spikes");
             Log.d("Player health: ", String.valueOf(health));
             if (updateCount > IMMUNITY_TIME) {
                 updateCount = 0;
                 immunity = true;
                 health--;
                 game.onGameEvent(GameEvent.SpikeDamage, this);
-                //TODO sound effect
             }
         }else if(that.getClass().equals(Coins.class)){
-            Log.d("Player Collision: ", "with coin");
-            coinsCollected++;//TODO coinamount--;
+            game.onGameEvent(GameEvent.CoinPickup, this);
+            coinsCollected++;
             game.coinAmount--;
-            //game.level.removeEntity(that);
         }
     }
 

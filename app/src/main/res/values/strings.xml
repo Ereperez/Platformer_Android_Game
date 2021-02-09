@@ -1,9 +1,14 @@
 <resources>
     <string name="app_name">Platformer</string>
-    <string name="coins">Coins</string>
     <string name="coins_collected_hud">"Coins collected: "</string>
     <string name="coins_total_hud">"Coins left: "</string>
     <string name="health_hud">"Health: "</string>
     <string name="game_over_hud">Game Over!</string>
-    <string name="game_over_restart_hud">(Game will restart)</string>
+    <string name="game_over_restart_hud">(Game is restarting)</string>
+    <string name="music_off">Music has been turned off</string>
+    <string name="music_on">Music has been turned on</string>
+    <string name="sound_off">Sound has been turned off</string>
+    <string name="sound_on">Sound has been turned on</string>
+    <string name="music">Music:</string>
+    <string name="sound">Sound:</string>
 </resources>

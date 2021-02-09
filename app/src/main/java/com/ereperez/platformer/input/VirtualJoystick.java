@@ -1,5 +1,6 @@
 package com.ereperez.platformer.input;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,10 +19,11 @@ public class VirtualJoystick extends InputManager implements View.OnTouchListene
                 .setOnTouchListener(this);
         view.findViewById(R.id.button_region)
                 .setOnTouchListener(this);
-        maxDistance = Utils.dpToPx(48 * 2); //48dp = minimum hit target. maxDistance is in pixels. - TODO: resources
+        maxDistance = Utils.dpToPx(48 * 2); //48dp = minimum hit target. maxDistance is in pixels.
         Log.d(TAG, "MaxDistance (pixels): " + maxDistance);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         int action = event.getActionMasked();
@@ -45,7 +47,6 @@ public class VirtualJoystick extends InputManager implements View.OnTouchListene
                 //get the proportion to the maxDistance
                 horizontalFactor = (event.getX(0) - startingPositionX)/VirtualJoystick.maxDistance;
                 horizontalFactor = Utils.clamp(horizontalFactor, -1.0f, 1.0f);
-
                 verticalFactor = (event.getY(0) - startingPositionY)/VirtualJoystick.maxDistance;
                 verticalFactor = Utils.clamp(verticalFactor, -1.0f, 1.0f);
             }

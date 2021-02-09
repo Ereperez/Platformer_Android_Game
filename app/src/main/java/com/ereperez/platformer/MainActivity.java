@@ -1,7 +1,6 @@
 package com.ereperez.platformer;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +9,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
-
+import android.widget.ToggleButton;
 import com.ereperez.platformer.input.Accelerometer;
 import com.ereperez.platformer.input.CompositeControl;
 import com.ereperez.platformer.input.Gamepad;
@@ -33,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements InputManager.Inpu
         levelLoader = new LevelLoader(this);
         setContentView(R.layout.activity_main);
         game = findViewById(R.id.game);
-       //InputManager controls = new TouchController(findViewById(R.id.touch_control)); //TODO menu for player to choose control - remove touch
         InputManager controls = new CompositeControl(
                 new VirtualJoystick(findViewById(R.id.virtual_joystick)),
                 new Gamepad(this),
@@ -41,6 +39,18 @@ public class MainActivity extends AppCompatActivity implements InputManager.Inpu
         );
         game.setControls(controls);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
+        loadMusicSoundStatus();
+    }
+
+    private void loadMusicSoundStatus(){
+        final ToggleButton musicBtn = findViewById(R.id.musicToggleButton);
+        boolean musicStatus = game.jukebox.getMusicStatus();
+        musicBtn.setChecked(musicStatus);
+
+        final ToggleButton soundBtn = findViewById(R.id.soundToggleButton);
+        boolean soundStatus = game.jukebox.getSoundStatus();
+        soundBtn.setChecked(soundStatus);
     }
 
     public void setGamepadListener(GamepadListener listener) {
@@ -83,18 +93,17 @@ public class MainActivity extends AppCompatActivity implements InputManager.Inpu
 
     @Override
     public void onInputDeviceAdded(final int deviceId) {
-/*        InputDevice dev = InputDevice.getDevice(deviceId);
+        InputDevice dev = InputDevice.getDevice(deviceId);
         int sources = dev.getSources();
         if (((sources & InputDevice.SOURCE_GAMEPAD) == InputDevice.SOURCE_GAMEPAD) ||
                 ((sources & InputDevice.SOURCE_JOYSTICK) == InputDevice.SOURCE_JOYSTICK)) {
             Toast.makeText(this, String.format("%s Added!", InputDevice.getDevice(deviceId).getName()), Toast.LENGTH_SHORT).show();
-        }*/
+        }
         Toast.makeText(this, "Input Device Added!", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onInputDeviceRemoved(final int deviceId) {
-        //probably pause the game and show some dialog
         Toast.makeText(this, "Input Device Removed!", Toast.LENGTH_LONG).show();
     }
 
@@ -143,5 +152,27 @@ public class MainActivity extends AppCompatActivity implements InputManager.Inpu
             View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
             View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         );
+    }
+
+    public void musicOnClick(View view) {
+        boolean checked = ((ToggleButton) view).isChecked();
+        Log.d(TAG, String.valueOf(checked));
+        if (!checked){
+            Toast.makeText(getApplicationContext(), R.string.music_off, Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(getApplicationContext(), R.string.music_on, Toast.LENGTH_SHORT).show();
+        }
+        game.jukebox.toggleMusicStatus();
+    }
+
+    public void soundOnClick(View view) {
+        boolean checked = ((ToggleButton) view).isChecked();
+        Log.d(TAG, String.valueOf(checked));
+        if (!checked){
+            Toast.makeText(getApplicationContext(), R.string.sound_off, Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(getApplicationContext(), R.string.sound_on, Toast.LENGTH_SHORT).show();
+        }
+        game.jukebox.toggleSoundStatus();
     }
 }

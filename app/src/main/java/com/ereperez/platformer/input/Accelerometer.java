@@ -8,23 +8,24 @@ import android.hardware.SensorManager;
 import android.util.Log;
 import android.view.Surface;
 
+import com.ereperez.platformer.GameSettings;
 import com.ereperez.platformer.MainActivity;
 import com.ereperez.platformer.utils.Utils;
 
 public class Accelerometer extends InputManager{
     public static final String TAG = "Accelerometer";
-    private static final float DEGREES_PER_RADIAN = 57.2957795f;
-    private static final float MAX_ANGLE = 30f;//TODO resource - possibly change
-    private static final int AXIS_COUNT = 3; //azimuth (z), pitch (x), roll (y)
-    private static final float SHAKE_THRESHOLD = 6f; //3.25f; // m/S^2     //TODO fix treshhold
-    private static final long COOLDOWN = 300; //ms
+    private static final float DEGREES_PER_RADIAN = GameSettings.DEGREES_PER_RADIAN;
+    private static final float MAX_ANGLE = GameSettings.MAX_ANGLE;
+    private static final int AXIS_COUNT = GameSettings.AXIS_COUNT; //azimuth (z), pitch (x), roll (y)
+    private static final float SHAKE_THRESHOLD = GameSettings.SHAKE_THRESHOLD; // m/S^2
+    private static final long COOLDOWN = GameSettings.COOLDOWN; //ms
     private final float[] rotationMatrix = new float[4*4];
     private final float[] orientation = new float[AXIS_COUNT];
     private final float[] lastMagFields = new float[AXIS_COUNT];
     private final float[] lastAccels = new float[AXIS_COUNT];
-    private long lastShake = 0; //TODO remove?
-    private final int rotation;
-    private final MainActivity mActivity;//= null;
+    private long lastShake = 0;
+    private int rotation = 0;
+    private MainActivity mActivity = null;
 
     public Accelerometer(MainActivity activity) {
         mActivity = activity;
@@ -55,7 +56,6 @@ public class Accelerometer extends InputManager{
         }
     }
 
-    //TODO remove?
     private boolean jumping(){
         if((System.currentTimeMillis() - lastShake) < COOLDOWN){
             return isJumping;

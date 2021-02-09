@@ -3,7 +3,6 @@ package com.ereperez.platformer;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -14,43 +13,39 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Objects;
 
 /**
  * Created by Edwin on 01,December,2020
  */
 public class Jukebox {
     public static final String TAG = "Jukebox";
-    private static final float LEFT_VOLUME = GameSettings.LEFT_VOLUME; //TODO rename to SFX_
-    private static final float RIGHT_VOLUME = GameSettings.RIGHT_VOLUME;
-    private static final float RATE_VOLUME = GameSettings.RATE_VOLUME;
-    private static final int PRIORITY_VOLUME = GameSettings.PRIORITY_VOLUME;
-    private static final int LOOP_VOLUME = GameSettings.LOOP_VOLUME;
-    private static final float DEFAULT_MUSIC_VOLUME = 0.5f;
-    private static final String SOUNDS_PREF_KEY = "sounds_pref_key";
-    private static final String MUSIC_PREF_KEY = "music_pref_key";
-
-    /*    static int CRASH = 0;
-    static int BOOST = 1;
-    static int GAME_START = 2;
-    static int GAME_OVER = 3;*/
+    private static final float SFX_LEFT_VOLUME = GameSettings.SFX_LEFT_VOLUME;
+    private static final float SFX_RIGHT_VOLUME = GameSettings.SFX_RIGHT_VOLUME;
+    private static final float SFX_RATE = GameSettings.SFX_RATE;
+    private static final int SFX_PRIORITY = GameSettings.SFX_PRIORITY;
+    private static final int SFX_LOOP = GameSettings.SFX_LOOP;
+    private static final float DEFAULT_MUSIC_VOLUME = GameSettings.DEFAULT_MUSIC_VOLUME;
+    private static final int MAX_STREAMS = GameSettings.MAX_STREAMS;
+    public static final String SOUNDS_PREF_KEY = "sounds_pref_key";
+    public static final String MUSIC_PREF_KEY = "music_pref_key";
 
     SoundPool soundPool = null;
     MediaPlayer mBgPlayer = null;
-    private static final int MAX_STREAMS = 4; //TODO change
-    private HashMap soundsMap;
-    private boolean soundEnabled = true; //TODO: make prefs
-    private boolean musicEnabled = true; //TODO: make pref
+    private HashMap soundsMap = null;
+    private boolean soundEnabled = true;
+    private boolean musicEnabled = true;
     private final Context context;
+    public SharedPreferences prefs = null;
 
     public Jukebox(Context mContext) {
         context = mContext;
-        SharedPreferences prefs = PreferenceManager
+        prefs = PreferenceManager
                 .getDefaultSharedPreferences(context);
-        soundEnabled = prefs.getBoolean(SOUNDS_PREF_KEY, true); //TODO toggle music on/off in UI
+        soundEnabled = prefs.getBoolean(SOUNDS_PREF_KEY, true);
         musicEnabled = prefs.getBoolean(MUSIC_PREF_KEY, true);
         loadIfNeeded();
     }
+
     private void loadIfNeeded(){
         if(soundEnabled){
             loadSounds();
@@ -60,7 +55,13 @@ public class Jukebox {
         }
     }
 
-    //TODO add accessor method for getSoundStatus and getMusicStatus
+    public boolean getSoundStatus(){
+        return prefs.getBoolean(SOUNDS_PREF_KEY, true);
+    }
+
+    public boolean getMusicStatus(){
+        return prefs.getBoolean(MUSIC_PREF_KEY, true);
+    }
 
     public void toggleSoundStatus(){
         soundEnabled = !soundEnabled;
@@ -80,28 +81,22 @@ public class Jukebox {
         musicEnabled = !musicEnabled;
         if(musicEnabled){
             loadMusic();
+            mBgPlayer.start();
         }else{
             unloadMusic();
         }
         PreferenceManager
                 .getDefaultSharedPreferences(context)
                 .edit()
-                .putBoolean(MUSIC_PREF_KEY, musicEnabled) //soundEnabled
+                .putBoolean(MUSIC_PREF_KEY, musicEnabled)
                 .apply();
     }
 
     public void playSoundForGameEvent(GameEvent event){
         if(!soundEnabled){return;}
-/*        final float leftVolume = DEFAULT_SFX_VOLUME;
-        final float rightVolume = DEFAULT_SFX_VOLUME;*/
-        final int priority = 1;
-        final int loop = 0; //-1 loop forever, 0 play once
-        final float rate = 1.0f; //TODO change to the gamesettings
         final Integer soundID = (Integer) soundsMap.get(event);
         if(soundID != null){
-            soundPool.play(soundID, 1, 1, priority, loop, rate);
-            //soundPool.play(soundID, LEFT_VOLUME, RIGHT_VOLUME, priority, loop, rate);
-            //soundPool.play(soundID, leftVolume, rightVolume, priority, loop, rate);
+            soundPool.play(soundID, SFX_LEFT_VOLUME, SFX_RIGHT_VOLUME, SFX_PRIORITY, SFX_LOOP, SFX_RATE);
         }
     }
 
@@ -163,6 +158,7 @@ public class Jukebox {
             mBgPlayer.setLooping(true);
             mBgPlayer.setVolume(DEFAULT_MUSIC_VOLUME, DEFAULT_MUSIC_VOLUME);
             mBgPlayer.prepare();
+            Log.d(TAG, "music loaded");
         }catch(IOException e){
             mBgPlayer = null;
             musicEnabled = false;

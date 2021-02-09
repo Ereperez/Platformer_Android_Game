@@ -52,9 +52,9 @@ public class BitmapUtils {
     }
 
     private static Bitmap loadSubSampledBitmap(final Resources res, final int resId, final int targetWidth, final int targetHeight, final BitmapFactory.Options opts) {
-        opts.inSampleSize = calculateInSampleSize(opts, targetWidth, targetHeight); //calculates clostest POT sample factor
+        opts.inSampleSize = calculateInSampleSize(opts, targetWidth, targetHeight); //calculates closest POT sample factor
         opts.inJustDecodeBounds = false;
-        opts.inScaled = true; //scale after subsampling, to reach exact target density.
+        opts.inScaled = true; //scale after sub-sampling, to reach exact target density.
         if(targetHeight > 0) {
             opts.inDensity = opts.outHeight;
             opts.inTargetDensity = targetHeight * opts.inSampleSize;

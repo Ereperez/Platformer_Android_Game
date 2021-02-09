@@ -11,7 +11,6 @@ public class InputManager {
     public void onResume() {}
     public void update(float dt) {}
 
-    //TODO extend in MainActivity?
     public interface InputDeviceListener extends android.hardware.input.InputManager.InputDeviceListener {
         void onInputDeviceAdded(final int deviceId);
         void onInputDeviceRemoved(final int deviceId);

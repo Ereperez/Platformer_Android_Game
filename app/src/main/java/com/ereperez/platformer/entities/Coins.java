@@ -3,24 +3,23 @@ package com.ereperez.platformer.entities;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.util.Log;
-
-import com.ereperez.platformer.GameEvent;
-import com.ereperez.platformer.levels.LevelManager;
+import com.ereperez.platformer.GameSettings;
 import com.ereperez.platformer.utils.Utils;
 
 /**
  * Created by edwin on 01,December,2020
  */
 public class Coins extends DynamicEntity{
-    private static final float MAX_DELTA = 0.48f; //TODO resource
+    private static final float MAX_DELTA = GameSettings.MAX_DELTA;
+    private static final float ENTITY_WIDTH = GameSettings.ENTITY_WIDTH;
+    private static final float ENTITY_HEIGHT = GameSettings.ENTITY_HEIGHT;
     private static boolean swap = false;
     private double dts;
 
     public Coins(String spriteName, int xPos, int yPos) {
         super(spriteName, xPos, yPos);
-        width = 0.5f;//DEFAULT_DIMENSION;
-        height = 0.5f;//DEFAULT_DIMENSION;
+        width = ENTITY_WIDTH;
+        height = ENTITY_HEIGHT;
         loadBitMap(spriteName, xPos, yPos);
     }
 
@@ -34,7 +33,7 @@ public class Coins extends DynamicEntity{
         }
         y += Utils.clamp((float) (velY * dt), -MAX_DELTA, MAX_DELTA);
         if (y > game.getWorldHeight()){
-            y = 0f;//Utils.between(-4f, 0f);
+            y = 0f;
         }
         isOnGround = false;
         if (!swap){
@@ -57,7 +56,7 @@ public class Coins extends DynamicEntity{
             final float gravityThisTick = (float) (gravity * dts);
             velY += gravityThisTick;
             swap = true;
-        }else if (that.getClass().equals(EnemySpikes.class)){ //TODO not needed?
+        }else if (that.getClass().equals(EnemySpikes.class)){
             swap = false;
         }
     }

@@ -3,36 +3,63 @@
     <integer name="stage_width">1280</integer>
     <integer name="stage_height">720</integer>
     <integer name="player_height">80</integer>
-<!--    <integer name="starting_position">40</integer>-->
-    <integer name="starting_health">5</integer>
+    <integer name="player_health">5</integer>
     <integer name="player_immunity_time">60</integer>
 
-<!--
-    <string name="acc">1.2f</string>
-    <string name="min_vel">1f</string>
-    <string name="max_vel">20f</string>
-    <string name="gravity">1.1f</string>
-    <string name="lift">-2.6f</string>
-    <string name="drag">0.97f</string>
--->
+    <string name="max_delta">0.48f</string>
+    <string name="entity_width">0.5f</string>
+    <string name="entity_height">0.5f</string>
+    <string name="default_dimension">1.0f</string>
+    <string name="player_dimension">0.5f</string>
 
-<!--    <integer name="star_color1">0xffff1166</integer>
-    <integer name="star_color2">0xffffff00</integer>
-    <integer name="star_color3">0xff99ccff</integer>
-    <integer name="star_color4">0xff66ff00</integer>
-    <integer name="player_blink_color">0xff000000</integer>
-    <integer name="enemy_height">80</integer>
-    <integer name="meteor_height">50</integer>
-    <integer name="enemy_spawn_offset">1280</integer>-->
+    <string name="gravity">40f</string>
+    <string name="player_speed">6.0f</string>
+    <string name="player_jump_force">-20f</string><!-- Can be changed to -(GRAVITY/2) inside game file -->
+    <string name="min_input_to_turn">0.05f</string><!--5% joystick input before we start turning-->
+    <integer name="left_direction">1</integer>
+    <integer name="right_direction">-1</integer>
+    <string name="degrees_per_radian">57.2957795f</string>
+    <string name="max_angle">30f</string>
+    <integer name="axis_count">3</integer><!--azimuth (z), pitch (x), roll (y)-->
+    <string name="shake_threshold">5f</string><!--Change threshold for jumping with shake here-->
+    <string name="cooldown">300</string><!--ms-->
 
+    <integer name="level_rows">30</integer>
+    <integer name="level_columns">15</integer>
+    <string name="meters_to_show_x">16f</string>
+    <string name="meters_to_show_y">0f</string><!-- calculated at runtime -->
+    <integer name="color_r">135</integer>
+    <integer name="color_b">235</integer>
+    <integer name="color_g">206</integer>
+
+    <string name="nanos_to_seconds">1.0 / 1000000000</string>
     <integer name="player_blink_color">0xff000000</integer>
-    <string name="left_volume">1f</string>
-    <string name="right_volume">1f</string>
-    <string name="rate_volume">1.0f</string>
-    <integer name="priority_volume">1</integer><!-- -1 = loop forever -->
-    <integer name="loop_volume">0</integer>
+
+    <string name="sfx_left_volume">0.8f</string>
+    <string name="sfx_right_volume">0.8f</string>
+    <string name="sfx_rate">1.0f</string>
+    <integer name="sfx_priority">1</integer>
+    <integer name="sfx_loop">0</integer><!-- -1 loop forever, 0 play once -->
+    <string name="default_music_volume">0.6f</string>
+    <integer name="max_streams">10</integer>
 
     <string name="fullscreen_text_size">45f</string>
     <integer name="hud_text_offset">10</integer>
     <string name="hud_text_size">35f</string>
+
+    <integer name="background_tile_int">0</integer>
+    <integer name="player_tile_int">1</integer>
+    <integer name="ground_tile_int">2</integer>
+    <integer name="ground_left_tile_int">3</integer>
+    <integer name="ground_right_tile_int">4</integer>
+    <integer name="spikes_tile_int">5</integer>
+    <integer name="coins_tile_int">6</integer>
+    <string name="background_tile">background</string>
+    <string name="nullsprite_tile">nullsprite</string>
+    <string name="player_tile">red_left1</string>
+    <string name="spikes_tile">spearsdown_brown</string>
+    <string name="coins_tile">coin_yellow</string>
+    <string name="ground_tile">ground_square</string>
+    <string name="ground_left_tile">ground_left</string>
+    <string name="ground_right_tile">ground_right</string>
 </resources>

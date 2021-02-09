@@ -1,16 +1,11 @@
 package com.ereperez.platformer.entities;
 
-import android.util.Log;
-
-import com.ereperez.platformer.GameEvent;
-import com.ereperez.platformer.input.InputManager;
-import com.ereperez.platformer.levels.LevelData;
-import com.ereperez.platformer.levels.LevelManager;
+import com.ereperez.platformer.GameSettings;
 import com.ereperez.platformer.utils.Utils;
 
 public class DynamicEntity extends StaticEntity {
-    private static final float MAX_DELTA = 0.48f; //TODO resource
-    static final float GRAVITY = 40f; //TODO RESOURCE
+    private static final float MAX_DELTA = GameSettings.MAX_DELTA;
+    static final float GRAVITY = GameSettings.GRAVITY;
     public float velX = 0;
     public float velY = 0;
     public final float gravity = GRAVITY;
@@ -29,7 +24,7 @@ public class DynamicEntity extends StaticEntity {
         }
         y += Utils.clamp((float) (velY * dt), -MAX_DELTA, MAX_DELTA);
         if (y > game.getWorldHeight()){
-            y = 0f;//Utils.between(-4f, 0f);
+            y = 0f;
         }
         isOnGround = false;
     }
@@ -41,9 +36,9 @@ public class DynamicEntity extends StaticEntity {
         y += Entity.overlap.y;
         if (Entity.overlap.y != 0){
             velY = 0;
-            if (Entity.overlap.y < 0f){//we've hit our fett
+            if (Entity.overlap.y < 0f){
                 isOnGround = true;
-            }//if overlap.y > 0f, we hit our head
+            }
         }
     }
 }

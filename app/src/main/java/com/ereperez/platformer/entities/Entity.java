@@ -6,23 +6,21 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 
 import com.ereperez.platformer.Game;
+import com.ereperez.platformer.GameSettings;
 
 public abstract class Entity {
-
     static final String TAG = "Entity";
-    static final float DEFAULT_DIMENSION = 1.0f;//TODO resources
-
+    static final float DEFAULT_DIMENSION = GameSettings.DEFAULT_DIMENSION;
     public static Game game = null; //shared ref, managed by the Game-class!
     public float x = 0;
     public float y = 0;
-    public float width = DEFAULT_DIMENSION;//0;
-    public float height = DEFAULT_DIMENSION;//0;
+    public float width = DEFAULT_DIMENSION;
+    public float height = DEFAULT_DIMENSION;
 
     public void update(final double dt) {}
     public void render(final Canvas canvas, final Matrix transform, final Paint paint) {}
     public void onCollision(final Entity that) {}
     public void destroy() {}
-    void respawn() {}//TODO remove?
 
     public float left() {
         return x;

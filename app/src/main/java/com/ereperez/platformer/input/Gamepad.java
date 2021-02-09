@@ -10,8 +10,7 @@ import com.ereperez.platformer.utils.Utils;
 
 public class Gamepad extends InputManager implements GamepadListener {
     public static final String TAG = "Gamepad";
-    //private final MainActivity mActivity; // = null;
-    MainActivity mActivity = null;
+    private MainActivity mActivity = null;
 
     public Gamepad(MainActivity activity) {
         mActivity = activity;
